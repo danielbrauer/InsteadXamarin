@@ -14,5 +14,11 @@ namespace Instead
         {
             InitializeComponent();
         }
+
+        void Button_Clicked(System.Object sender, System.EventArgs e)
+        {
+
+            Client.Login(username.Text, password.Text, secretKey.Text);
+        }
     }
 }
