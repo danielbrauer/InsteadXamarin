@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
-namespace Instead
+
+namespace Instead.Services
 {
     public static class CryptoExtensions
     {

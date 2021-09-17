@@ -25,5 +25,16 @@
     <None Remove="BouncyCastle" />
     <None Remove="Portable.BouncyCastle" />
     <None Remove="Microsoft.IdentityModel.Tokens" />
+    <None Remove="ViewModels\" />
+    <None Remove="Views\" />
+    <None Remove="Services\" />
+    <None Remove="Models\" />
+    <None Remove="TinyIoC" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewModels\" />
+    <Folder Include="Views\" />
+    <Folder Include="Services\" />
+    <Folder Include="Models\" />
   </ItemGroup>
 </Project>

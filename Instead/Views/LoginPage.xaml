@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Instead.MainPage">
+             x:Class="Instead.LoginPage">
     <StackLayout Margin="48">
         <Entry x:Name="username"
                Placeholder="Username"
@@ -18,8 +18,9 @@
                ReturnType="Go"
                IsTextPredictionEnabled="false"
                IsSpellCheckEnabled="False"/>
-        <Button Text="Log in"
+        <Button Text="Log idn"
                 Clicked="Button_Clicked"/>
+        <ActivityIndicator IsRunning="{Binding Working}"/>
     </StackLayout>
 
 </ContentPage>

@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Instead
+namespace Instead.Services
 {
 
     public struct StartLoginInput
@@ -28,7 +28,7 @@ namespace Instead
         public string serverSessionProof;
         public string privateKey;
         public string privateKeyIv;
-        public string publicKey;
+        public JsonWebKey publicKey;
         public string mukSalt;
     }
 
@@ -36,10 +36,10 @@ namespace Instead
     {
 
         [Post("auth/startLogin")]
-        Task<StartLoginResult> startLogin([Body] StartLoginInput input);
+        Task<StartLoginResult> StartLogin([Body] StartLoginInput input);
 
         [Post("auth/finishLogin")]
-        Task<FinishLoginResult> finishLogin([Body] FinishLoginInput input);
+        Task<FinishLoginResult> FinishLogin([Body] FinishLoginInput input);
     }
 
 }
