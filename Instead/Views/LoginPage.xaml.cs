@@ -6,8 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Instead.ViewModels;
+using System.Globalization;
 
-namespace Instead
+namespace Instead.Views
 {
     public partial class LoginPage : ContentPage
     {
@@ -21,7 +22,13 @@ namespace Instead
 
         async void Button_Clicked(System.Object sender, System.EventArgs e)
         {
-            await VM.Login(username.Text, password.Text, secretKey.Text);
+            VM.ErrorMessage = null;
+            var success = await VM.Login(username.Text, password.Text, secretKey.Text);
+            if (success)
+            {
+                await Navigation.PushAsync(new TabRoot());
+                Navigation.RemovePage(this);
+            }
         }
     }
 }

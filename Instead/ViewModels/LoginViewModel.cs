@@ -19,11 +19,35 @@ namespace Instead.ViewModels
             }
         }
 
-        public async Task Login(string username, string password, string secretKey)
+        string _errorMessage;
+
+        public string ErrorMessage
+        {
+            get => _errorMessage;
+            set
+            {
+                _errorMessage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public async Task<bool> Login(string username, string password, string secretKey)
         {
             Working = true;
-            await Services.Client.Login(username, password, secretKey);
-            Working = false;
+            try
+            {
+                await Services.Client.Login(username, password, secretKey);
+            }
+            catch (Exception e)
+            {
+                ErrorMessage = e.Message;
+                return false;
+            }
+            finally
+            {
+                Working = false;
+            }
+            return true;
         }
     }
 }

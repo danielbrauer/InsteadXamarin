@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Instead.LoginPage">
+             x:Class="Instead.Views.LoginPage">
     <StackLayout Margin="48">
         <Entry x:Name="username"
                Placeholder="Username"
@@ -18,8 +18,14 @@
                ReturnType="Go"
                IsTextPredictionEnabled="false"
                IsSpellCheckEnabled="False"/>
-        <Button Text="Log idn"
-                Clicked="Button_Clicked"/>
+        <Button Text="Log in"
+                Clicked="Button_Clicked"
+                IsEnabled="{Binding Path=Working,
+                                    Converter={StaticResource not}}"/>
+        <Label HorizontalOptions="Center"
+               Text="{Binding ErrorMessage}"
+               IsEnabled="{Binding Path=ErrorMessage,
+                                   Converter={StaticResource isNotNull}}"/>
         <ActivityIndicator IsRunning="{Binding Working}"/>
     </StackLayout>
 

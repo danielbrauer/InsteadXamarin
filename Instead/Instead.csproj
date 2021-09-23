@@ -30,11 +30,13 @@
     <None Remove="Services\" />
     <None Remove="Models\" />
     <None Remove="TinyIoC" />
+    <None Remove="Converters\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewModels\" />
     <Folder Include="Views\" />
     <Folder Include="Services\" />
     <Folder Include="Models\" />
+    <Folder Include="Converters\" />
   </ItemGroup>
 </Project>
