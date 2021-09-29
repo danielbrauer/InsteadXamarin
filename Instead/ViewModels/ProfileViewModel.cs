@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Instead.Models;
 using Instead.Services;
 
@@ -10,7 +11,7 @@ namespace Instead.ViewModels
         {
         }
 
-        internal async void LogOut()
+        internal async Task LogOut()
         {
             await LocalUser.Current.LogOut();
         }

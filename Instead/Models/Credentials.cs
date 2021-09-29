@@ -1,5 +1,4 @@
-﻿using System;
-namespace Instead.Models
+﻿namespace Instead.Models
 {
     public class Credentials
     {

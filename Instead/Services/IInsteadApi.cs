@@ -34,7 +34,6 @@ namespace Instead.Services
 
     public interface IInsteadApi
     {
-
         [Post("auth/startLogin")]
         Task<StartLoginResult> StartLogin([Body] StartLoginInput input);
 
