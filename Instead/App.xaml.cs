@@ -11,7 +11,10 @@ namespace Instead
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new LoginPage());
+            var loginPage = new NavigationPage(new LoginPage());
+            // Doesn't remove the navigation bar
+            NavigationPage.SetHasNavigationBar(loginPage, false);
+            MainPage = loginPage;
         }
 
         protected override void OnStart()
