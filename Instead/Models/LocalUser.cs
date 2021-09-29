@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Instead.Services;
 using Microsoft.IdentityModel.Tokens;
 
@@ -17,11 +16,12 @@ namespace Instead.Models
 
         public static async Task Login(Credentials credentials)
         {
-            var user = new LocalUser { Credentials = credentials };
+            var user = new LocalUser {
+                Credentials = credentials,
+                Session = new Session("http://10.0.2.2:3001")
+            };
 
-            var session = new Session("http://10.0.2.2:3001");
-
-            var keyPair = await session.Login(user.Credentials);
+            var keyPair = await user.Session.Login(user.Credentials);
 
             user.PrivateKey = keyPair.Private;
             user.PublicKey = keyPair.Public;
