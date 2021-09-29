@@ -32,7 +32,7 @@ namespace Instead.Services
         public string mukSalt;
     }
 
-    public interface AuthService
+    public interface IInsteadApi
     {
 
         [Post("auth/startLogin")]
@@ -40,6 +40,9 @@ namespace Instead.Services
 
         [Post("auth/finishLogin")]
         Task<FinishLoginResult> FinishLogin([Body] FinishLoginInput input);
+
+        [Put("api/logout")]
+        Task Logout();
     }
 
 }

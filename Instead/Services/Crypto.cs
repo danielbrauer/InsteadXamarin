@@ -5,6 +5,7 @@ using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Crypto.Engines;
 using Org.BouncyCastle.Crypto.Modes;
 using System;
+using Instead.Models;
 
 namespace Instead.Services
 {
@@ -20,17 +21,17 @@ namespace Instead.Services
             return result;
         }
 
-        public static string DeriveUserKey(string salt, string password, string secretKey, string username)
+        public static string DeriveUserKey(string salt, Credentials creds)
         {
-            var keyParts = secretKey.Split('-');
+            var keyParts = creds.SecretKey.Split('-');
             var version = keyParts[0];
             var key = keyParts[1];
 
-            var passwordBin = password.Trim().Normalize(System.Text.NormalizationForm.FormKC).UTF8ToBytes();
+            var passwordBin = creds.Password.Trim().Normalize(NormalizationForm.FormKC).UTF8ToBytes();
 
-            var saltedSalt = HkdfSha256(salt, 32, username, version);
+            var saltedSalt = HkdfSha256(salt, 32, creds.Username, version);
             var hashedPassword = SCrypt.Generate(passwordBin, saltedSalt, 16384, 8, 1, 32);
-            var saltedKey = HkdfSha256(key, 32, username, version);
+            var saltedKey = HkdfSha256(key, 32, creds.Username, version);
             return hashedPassword.Xor(saltedKey).ToHex();
         }
 

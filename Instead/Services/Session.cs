@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Threading.Tasks;
+using Instead.Models;
 using Microsoft.IdentityModel.Tokens;
 using RestEase;
 using SecureRemotePassword;
@@ -8,41 +9,48 @@ using SecureRemotePassword;
 namespace Instead.Services
 {
 
-    public class Client
+    public class Session
     {
+        readonly IInsteadApi api;
 
-        JsonWebKey privateKey;
-        JsonWebKey publicKey;
+        public Session(string url)
+        {
+            api = RestClient.For<IInsteadApi>(url);
+        }
 
-        Client() { }
+        public class KeyPair
+        {
+            public JsonWebKey Private;
+            public JsonWebKey Public;
+        }
 
-        public async static Task<Client> Login(string username, string password, string secretKey)
+        public async Task<KeyPair> Login(Credentials creds)
         {
             Console.WriteLine("Starting login");
 
             var srpClient = new SrpClient();
-            var clientEphemeral = srpClient.GenerateEphemeral();
-            var auth = RestClient.For<AuthService>("http://10.0.2.2:3001");
 
-            var startResponse = await auth.StartLogin(
+            var clientEphemeral = srpClient.GenerateEphemeral();
+
+            var startResponse = await api.StartLogin(
                 new StartLoginInput
                 {
-                    username = username,
+                    username = creds.Username,
                     clientEphemeralPublic = clientEphemeral.Public
                 }
                 );
 
-            var srpKey = Crypto.DeriveUserKey(startResponse.srpSalt, password, secretKey, username);
+            var srpKey = Crypto.DeriveUserKey(startResponse.srpSalt, creds);
 
             var clientSession = srpClient.DeriveSession(
                 clientEphemeral.Secret,
                 startResponse.serverEphemeralPublic,
                 startResponse.srpSalt,
-                username,
+                creds.Username,
                 srpKey
                 );
                 
-            var finishResponse = await auth.FinishLogin(
+            var finishResponse = await api.FinishLogin(
                 new FinishLoginInput { clientSessionProof = clientSession.Proof }
                 );
 
@@ -52,7 +60,7 @@ namespace Instead.Services
                 finishResponse.serverSessionProof
                 );
 
-            var mukHex = Crypto.DeriveUserKey(finishResponse.mukSalt, password, secretKey, username);
+            var mukHex = Crypto.DeriveUserKey(finishResponse.mukSalt, creds);
 
             var privateKeyJson = Crypto.DecryptAesGcm(
                 Convert.FromBase64String(finishResponse.privateKey),
@@ -60,12 +68,16 @@ namespace Instead.Services
                 Convert.FromBase64String(finishResponse.privateKeyIv)
                 );
 
-            var client = new Client() {
-                privateKey = new JsonWebKey(Encoding.UTF8.GetString(privateKeyJson)),
-                publicKey = finishResponse.publicKey
+            return new KeyPair
+            {
+                Private = new JsonWebKey(Encoding.UTF8.GetString(privateKeyJson)),
+                Public = finishResponse.publicKey
             };
+        }
 
-            return client;
+        public async Task Logout()
+        {
+            await api.Logout();
         }
     }
 }

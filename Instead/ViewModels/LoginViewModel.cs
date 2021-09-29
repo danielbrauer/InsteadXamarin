@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using Instead.Models;
+using Instead.Services;
 
 namespace Instead.ViewModels
 {
@@ -36,7 +38,13 @@ namespace Instead.ViewModels
             Working = true;
             try
             {
-                await Services.Client.Login(username, password, secretKey);
+                var credentials = new Credentials
+                {
+                    Username = username,
+                    Password = password,
+                    SecretKey = secretKey
+                };
+                await LocalUser.Login(credentials);
             }
             catch (Exception e)
             {

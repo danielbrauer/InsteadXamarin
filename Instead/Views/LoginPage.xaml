@@ -19,7 +19,7 @@
                IsTextPredictionEnabled="false"
                IsSpellCheckEnabled="False"/>
         <Button Text="Log in"
-                Clicked="Button_Clicked"
+                Clicked="LogIn"
                 IsEnabled="{Binding Path=Working,
                                     Converter={StaticResource not}}"/>
         <Label HorizontalOptions="Center"

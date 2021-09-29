@@ -20,7 +20,7 @@ namespace Instead.Views
 
         LoginViewModel VM => BindingContext as LoginViewModel;
 
-        async void Button_Clicked(System.Object sender, System.EventArgs e)
+        async void LogIn(System.Object sender, System.EventArgs e)
         {
             VM.ErrorMessage = null;
             var success = await VM.Login(username.Text, password.Text, secretKey.Text);
